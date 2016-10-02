@@ -1,0 +1,17 @@
+%p#notice= notice
+%h1 Cards
+%table
+  %thead
+    %tr
+      %th{:colspan => '5'}
+  %tbody
+    - @cards.each do |card|
+      %tr
+        %td
+          %strong= card.title
+        %td= card.description
+        %td= link_to 'Show', card
+        %td= link_to 'Edit', edit_card_path(card)
+        %td= link_to 'Destroy', card, method: :delete, data: { confirm: 'Are you sure?' }
+%br/
+= link_to 'New Card', new_card_path
