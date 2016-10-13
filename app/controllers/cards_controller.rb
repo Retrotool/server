@@ -1,5 +1,6 @@
 class CardsController < ApplicationController
   before_action :set_card, only: [:show, :edit, :update, :destroy]
+  after_action :notify_clients, only: [:create, :update, :destroy]
 
   # GET /cards
   # GET /cards.json
@@ -59,6 +60,15 @@ class CardsController < ApplicationController
       format.html { redirect_to cards_url, notice: 'Card was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  private
+  def notify_clients
+    ActionCable.server.broadcast 'messages',
+      {
+        action: action_name,
+        card: @card
+      }
   end
 
   private
